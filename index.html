@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Diner Test — J. David Stem</title>
+
+<!-- META PIXEL — REPLACE YOUR_PIXEL_ID WITH YOUR ACTUAL PIXEL ID -->
+<script>
+!function(f,b,e,v,n,t,s)
+{if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+n.queue=[];t=b.createElement(e);t.async=!0;
+t.src=v;s=b.getElementsByTagName(e)[0];
+s.parentNode.insertBefore(t,s)}(window, document,'script',
+'https://connect.facebook.net/en_US/fbevents.js');
+fbq('init', '1924082311827749');
+fbq('track', 'PageView');
+</script>
+<noscript><img height="1" width="1" style="display:none"
+src="https://www.facebook.com/tr?id=1924082311827749&ev=PageView&noscript=1"/></noscript>
+
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    --black: #0a0a08;
+    --charcoal: #111110;
+    --gold: #c8a96e;
+    --gold-light: #e8d4a8;
+    --orange: #d94f1e;
+    --cream: #f5f0e8;
+    --muted: #7a7670;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--black);
+    color: var(--cream);
+    font-family: 'DM Sans', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  .credential-bar {
+    background: var(--orange);
+    text-align: center;
+    padding: 8px 20px;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: .15em;
+    text-transform: uppercase;
+    color: #fff;
+  }
+
+  .page {
+    max-width: 680px;
+    margin: 0 auto;
+    padding: 0 24px 80px;
+  }
+
+  .hero {
+    padding: 64px 0 48px;
+    opacity: 0;
+    animation: fadeUp .8s ease forwards;
+  }
+
+  .hero-eyebrow {
+    font-size: 11px;
+    letter-spacing: .25em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 24px;
+    font-weight: 500;
+  }
+
+  /* FIXED HEADLINE — no orphan "is" */
+  .hero-headline {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(48px, 9vw, 80px);
+    line-height: .94;
+    letter-spacing: .01em;
+    color: var(--cream);
+    margin-bottom: 24px;
+  }
+
+  .hero-headline .line-gold {
+    color: var(--gold);
+    display: block;
+  }
+
+  /* Video container */
+  .video-wrap {
+    width: 100%;
+    aspect-ratio: 16/9;
+    background: var(--charcoal);
+    border: 1px solid rgba(200,169,110,.2);
+    border-radius: 4px;
+    margin: 40px 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    opacity: 0;
+    animation: fadeUp .8s ease .15s forwards;
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* When you have a real video, replace this entire .video-wrap content with:
+     <div class="video-wrap">
+       <iframe src="YOUR_YOUTUBE_OR_VIMEO_EMBED_URL" frameborder="0" allowfullscreen
+         style="width:100%;height:100%;position:absolute;inset:0;"></iframe>
+     </div>
+  */
+
+  .video-placeholder-icon {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    background: var(--orange);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .video-placeholder-icon::after {
+    content: '';
+    width: 0;
+    height: 0;
+    border-top: 12px solid transparent;
+    border-bottom: 12px solid transparent;
+    border-left: 20px solid #fff;
+    margin-left: 4px;
+  }
+
+  .video-placeholder-text {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 18px;
+    letter-spacing: .1em;
+    color: var(--muted);
+  }
+
+  .video-placeholder-sub {
+    font-size: 12px;
+    color: rgba(122,118,112,.6);
+    letter-spacing: .05em;
+  }
+
+  .divider {
+    width: 48px;
+    height: 2px;
+    background: var(--orange);
+    margin: 40px 0;
+  }
+
+  .scene {
+    background: var(--charcoal);
+    border-left: 3px solid var(--gold);
+    padding: 28px 32px;
+    margin-bottom: 40px;
+    opacity: 0;
+    animation: fadeUp .8s ease .3s forwards;
+  }
+
+  .scene-label {
+    font-size: 10px;
+    letter-spacing: .2em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 12px;
+    font-weight: 500;
+  }
+
+  .scene-text {
+    font-family: 'DM Serif Display', serif;
+    font-style: italic;
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--cream);
+  }
+
+  .scene-text strong {
+    font-style: normal;
+    color: var(--gold-light);
+  }
+
+  .question {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(26px, 5vw, 38px);
+    line-height: 1.05;
+    color: var(--cream);
+    margin-bottom: 16px;
+    opacity: 0;
+    animation: fadeUp .8s ease .4s forwards;
+  }
+
+  .question-body {
+    font-size: 15px;
+    color: var(--muted);
+    line-height: 1.75;
+    margin-bottom: 48px;
+    opacity: 0;
+    animation: fadeUp .8s ease .5s forwards;
+  }
+
+  .question-body strong {
+    color: var(--cream);
+    font-weight: 500;
+  }
+
+  .form-section {
+    opacity: 0;
+    animation: fadeUp .8s ease .6s forwards;
+  }
+
+  .form-label {
+    font-size: 11px;
+    letter-spacing: .2em;
+    text-transform: uppercase;
+    color: var(--gold);
+    font-weight: 500;
+    margin-bottom: 16px;
+    display: block;
+  }
+
+  .form-row {
+    display: flex;
+    border: 1px solid rgba(200,169,110,.3);
+    border-radius: 3px;
+    overflow: hidden;
+    transition: border-color .2s;
+  }
+
+  .form-row:focus-within { border-color: var(--gold); }
+
+  .form-input {
+    flex: 1;
+    background: rgba(255,255,255,.04);
+    border: none;
+    outline: none;
+    padding: 16px 20px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    color: var(--cream);
+    min-width: 0;
+  }
+
+  .form-input::placeholder { color: var(--muted); }
+
+  .form-btn {
+    background: var(--orange);
+    border: none;
+    padding: 16px 28px;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 18px;
+    letter-spacing: .08em;
+    color: #fff;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: background .15s, transform .1s;
+    flex-shrink: 0;
+  }
+
+  .form-btn:hover { background: #c04018; }
+  .form-btn:active { transform: scale(.98); }
+
+  .form-disclaimer {
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 12px;
+    letter-spacing: .02em;
+  }
+
+  .success {
+    display: none;
+    background: rgba(200,169,110,.08);
+    border: 1px solid rgba(200,169,110,.3);
+    border-radius: 3px;
+    padding: 32px;
+    text-align: center;
+  }
+
+  .success-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 36px;
+    color: var(--gold);
+    letter-spacing: .05em;
+    margin-bottom: 8px;
+  }
+
+  .success-body {
+    font-size: 14px;
+    color: var(--muted);
+    line-height: 1.65;
+  }
+
+  .credentials {
+    margin-top: 64px;
+    padding-top: 40px;
+    border-top: 1px solid rgba(255,255,255,.06);
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    opacity: 0;
+    animation: fadeUp .8s ease .75s forwards;
+  }
+
+  .cred-avatar {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    background: var(--charcoal);
+    border: 2px solid rgba(200,169,110,.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 20px;
+    color: var(--gold);
+    flex-shrink: 0;
+  }
+
+  .cred-name {
+    font-weight: 500;
+    font-size: 15px;
+    color: var(--cream);
+    margin-bottom: 4px;
+  }
+
+  .cred-line {
+    font-size: 12px;
+    color: var(--muted);
+    line-height: 1.6;
+  }
+
+  .cred-line span { color: var(--gold); }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(18px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  @media (max-width: 480px) {
+    .form-row { flex-direction: column; }
+    .form-btn { padding: 14px; width: 100%; }
+    .scene { padding: 20px; }
+    .credentials { flex-direction: column; text-align: center; }
+  }
+</style>
+</head>
+<body>
+
+<div class="credential-bar">
+  Shrek 2 &nbsp;·&nbsp; Jimmy Neutron &nbsp;·&nbsp; Disenchanted &nbsp;·&nbsp; $2.5 Billion at the Box Office
+</div>
+
+<div class="page">
+
+  <div class="hero">
+    <div class="hero-eyebrow">J. David Stem · The Writer's Forge</div>
+    <div class="hero-headline">
+      Your plot isn't broken.<br>
+      <span class="line-gold">Your character is.</span>
+    </div>
+  </div>
+
+  <div class="video-wrap" style="position:relative;width:100%;aspect-ratio:16/9;border-radius:4px;overflow:hidden;margin:40px 0;opacity:0;animation:fadeUp .8s ease .15s forwards;">
+    <iframe
+      src="https://www.youtube.com/embed/_6AzOy2wDjc?rel=0&modestbranding=1"
+      title="J. David Stem — The Diner Test"
+      frameborder="0"
+      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+      allowfullscreen
+      style="position:absolute;inset:0;width:100%;height:100%;">
+    </iframe>
+  </div>
+
+  <div class="scene">
+    <div class="scene-label">Five Easy Pieces · 1970</div>
+    <div class="scene-text">
+      Jack Nicholson wants toast. The diner has a rule: no substitutions. He doesn't accept it. He doesn't leave. He engineers a solution — orders a chicken salad sandwich on wheat toast, hold the chicken. He gets the toast.<br><br>
+      <strong>No backstory. No setup. In 90 seconds, you know exactly who this person is.</strong><br><br>
+      Because the writer knew their character's wound — and it lives in every single choice they make.
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="question">Now put your protagonist in that diner.</div>
+
+  <div class="question-body">
+    They want toast. The waitress says no substitutions.<br><br>
+    <strong>What do they do?</strong><br><br>
+    If you know — specifically, concretely, without any doubt — you have a character.<br><br>
+    If you're not sure... that's not failure. That's exactly where the work begins.<br><br>
+    I've spent 25 years in writers' rooms at Disney, Paramount, and DreamWorks diagnosing why scripts don't work. It almost always traces back to one thing: the writer doesn't know their character's wound.<br><br>
+    Enter your email and I'll send you the Diner Test — a free diagnostic that finds your character's Wound, Lie, and Small Life in five minutes.
+  </div>
+
+  <div class="form-section">
+    <label class="form-label" for="email-input">Get the free Diner Test</label>
+    <div class="form-row" id="form-row">
+      <input
+        type="email"
+        id="email-input"
+        class="form-input"
+        placeholder="your@email.com"
+        required
+      />
+      <button class="form-btn" onclick="handleSubmit()">Send It →</button>
+    </div>
+    <div class="form-disclaimer" id="form-disc">No cost. No catch. All toast. Unsubscribe anytime.</div>
+
+    <div class="success" id="success-msg">
+      <div class="success-title">Check your inbox.</div>
+      <div class="success-body">
+        The Diner Test is on its way.<br>
+        Welcome to The Writer's Forge.
+      </div>
+    </div>
+  </div>
+
+  <div class="credentials">
+    <div class="cred-avatar">JDS</div>
+    <div>
+      <div class="cred-name">J. David Stem</div>
+      <div class="cred-line">
+        <span>Shrek 2 · Jimmy Neutron · Disenchanted</span><br>
+        Emmy-nominated · 25 years coaching writers<br>
+        Disney · Paramount · DreamWorks · Founder, The Writer's Forge
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+function handleSubmit() {
+  const input = document.getElementById('email-input');
+  const email = input.value.trim();
+
+  if (!email || !email.includes('@') || !email.includes('.')) {
+    input.style.outline = '2px solid #d94f1e';
+    input.focus();
+    return;
+  }
+
+  // Fire Meta Pixel Lead event
+  if (typeof fbq !== 'undefined') {
+    fbq('track', 'Lead', {
+      content_name: 'Diner Test',
+      content_category: 'Screenwriting Lead Magnet'
+    });
+  }
+
+  // Hide form elements
+  document.getElementById('form-row').style.display = 'none';
+  document.querySelector('.form-label').style.display = 'none';
+  document.getElementById('form-disc').style.display = 'none';
+
+  // Show success
+  const s = document.getElementById('success-msg');
+  s.style.display = 'block';
+  s.style.opacity = '0';
+  s.style.transition = 'opacity .4s ease';
+  setTimeout(() => s.style.opacity = '1', 10);
+
+  // TODO: POST email to your list (Kit/ConvertKit etc)
+  // fetch('YOUR_KIT_FORM_URL', {
+  //   method: 'POST',
+  //   headers: { 'Content-Type': 'application/json' },
+  //   body: JSON.stringify({ email_address: email })
+  // });
+}
+
+document.getElementById('email-input').addEventListener('keydown', e => {
+  if (e.key === 'Enter') handleSubmit();
+});
+</script>
+
+</body>
+</html>
